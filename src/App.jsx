@@ -9,7 +9,9 @@ import MyRecipe from './pages/MyRecipe'
 import RecipeDetails from './pages/RecipeDetails'
 import MyRecipeDetails from './pages/MyRecipeDetails'
 import CreateRecipe from './pages/CreateRecipe' 
+import CreateAiRecipe from './pages/CreateAiRecipe'
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom'
+import MyProfile from './pages/MyProfile'
 
 function App() {
 
@@ -31,7 +33,9 @@ function App() {
             <Route path="recipes/:id" element={<RecipeDetails />} />
             <Route path="my-recipes" element={<MyRecipe />} />
             <Route path="create-recipe" element={<CreateRecipe isEdit={false} />} />
+            <Route path="ai-recipe" element={<CreateAiRecipe />} />
             <Route path="my-recipes/:id" element={<CreateRecipe isEdit={true} />} />
+            <Route path="my-profile" element={<MyProfile />} />
             <Route index element={<Navigate to="home" replace />} />
           </Route>
 

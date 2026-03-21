@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Box, Drawer, useTheme } from '@mui/material'
 import Navbar from './components/Navbar'
 import Sidebar from './components/Sidebar'
 import { Outlet } from 'react-router-dom'
+import { AppContext } from './config/AppContext'
 
 const drawerWidth = 200
 const closedWidth = 40
@@ -10,8 +11,13 @@ const closedWidth = 40
 const Layout = () => {
   const [open, setOpen] = useState(true)
   const theme = useTheme()
+  const { isLoading } = useContext(AppContext)
 
   const toggleDrawer = () => setOpen(prev => !prev)
+
+  if (isLoading) {
+    return <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading...</Box>
+  }
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
@@ -26,7 +32,6 @@ const Layout = () => {
           '& .MuiDrawer-paper': {
             width: open ? drawerWidth : closedWidth,
             boxSizing: 'border-box',
-            mt: '64px',
             borderRight: '1px solid #e6e9ee',
             transition: theme.transitions.create('width'),
             position: 'fixed',

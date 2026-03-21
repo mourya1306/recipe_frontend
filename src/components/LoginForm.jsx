@@ -21,6 +21,7 @@ const LoginForm = () => {
             })
             setIsAuth(true)
             localStorage.setItem('token', response.data.token)
+            localStorage.setItem('isAuth', JSON.stringify(true))
             navigate('/home')
         } catch (error) {
             console.error('Error signing in user:', error)

@@ -23,6 +23,22 @@ const MyRecipe = () => {
         }   
     }
 
+    const handleEdit = (id) => {
+       // navigate(`/edit-recipe/${id}`)
+    }
+
+    const handleDelete = async (id) => {
+        try {
+            await axios.delete(`http://localhost:3000/recipes/${id}`, {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+            });
+            // remove locally without refetch
+            setMyRecipes(prev => prev.filter(recipe => recipe.id !== id));
+        } catch (error) {
+            console.error('Error deleting recipe:', error);
+        }
+    }
+
     useEffect(() => {   
         fetchMyRecipes()
     }, [])
@@ -71,6 +87,8 @@ const MyRecipe = () => {
             imageurl={recipe.image_url}
             date={recipe.updated_at}    
             path={`/my-recipes/${recipe.id}`}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
         />
       ))}
     </Box>

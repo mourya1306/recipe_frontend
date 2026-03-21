@@ -9,7 +9,7 @@ import { NavLink } from 'react-router-dom'
 const Sidebar = ({ open = true }) => {
   const linkStyle = { textDecoration: 'none', color: 'inherit' }
   return (
-    <Box sx={{ width: '100%', pt: 2 }}>
+    <Box sx={{ width: '100%', pt: 0, height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
       {/* <Box sx={{ px: open ? 2 : 1, mb: 1 }}>
         {open ? (
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>Main items</Typography>
@@ -17,7 +17,7 @@ const Sidebar = ({ open = true }) => {
           <Typography variant="caption" color="text.secondary">Menu</Typography>
         )}
       </Box> */}
-      <List component="nav">
+      <List component="nav" sx={{ pt: 0, mt: 0 }}>
         <NavLink to="/home" style={linkStyle}>
           <ListItemButton sx={{ px: open ? 2 : 1 }}>
             <Tooltip title={!open ? 'Home' : ''} placement="right">
@@ -38,14 +38,14 @@ const Sidebar = ({ open = true }) => {
         </NavLink>
 
 
-        <NavLink to="/about" style={linkStyle}>
+        {/* <NavLink to="/about" style={linkStyle}>
           <ListItemButton sx={{ px: open ? 2 : 1 }}>
             <Tooltip title={!open ? 'About' : ''} placement="right">
               <ListItemIcon sx={{ minWidth: 0, mr: open ? 2 : 0 }}><InfoIcon /></ListItemIcon>
             </Tooltip>
             {open && <ListItemText primary="About" />}
           </ListItemButton>
-        </NavLink>
+        </NavLink> */}
       </List>
       {/* <Divider sx={{ my: 2 }} />
     <Box sx={{ px: open ? 2 : 1 }}>

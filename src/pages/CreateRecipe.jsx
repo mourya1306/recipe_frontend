@@ -94,6 +94,9 @@ const CreateRecipe = ({isEdit}) => {
 
               {/* Row 5: Image URL (70%) | Difficulty (30%) */}
               <Grid item xs={12} md={8}>
+                {/* {
+                    isEdit && <img src={image_url} alt={title} />
+                } */}
                 <TextField label="Image URL" value={image_url} onChange={(e) => setImageUrl(e.target.value)} fullWidth />
               </Grid>
               <Grid item xs={12} md={4}>

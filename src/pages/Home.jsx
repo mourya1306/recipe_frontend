@@ -1,7 +1,7 @@
 import React, { use, useEffect, useState } from 'react'
 import RecipeCard from '../components/RecipeCard'
 import axios from 'axios'
-import { Box, Button, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material'
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material'
 
 const Home = () => {
   const [recipes, setRecipes] = useState([])
@@ -55,7 +55,6 @@ const Home = () => {
         style={{width:"50%"}}
         label="Search Recipes"
         variant="outlined"
-        size="small"
         value={searchTerm}
         onChange={(e) => {
          const value = e.target.value;
@@ -66,31 +65,66 @@ const Home = () => {
         Search
       </Button>
 
-      <Select value={category} 
+      {/* <Select value={category} 
       onChange={(e) => setCategory(e.target.value)} 
       size="small"
       label='category'
 
       >
-        <MenuItem value=''>None</MenuItem>
+        
+      </Select> */}
+
+
+      <Box sx={{ minWidth: 120 }}>
+      <FormControl fullWidth>
+        <InputLabel id="category-label">Category</InputLabel>
+        <Select
+        
+          labelId="category-label"
+          id="category-select"
+          value={category}
+          label="Category"
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <MenuItem value=''>None</MenuItem>
         {categories.map((cat) => (  
           <MenuItem  key={cat} value={cat}>{cat}</MenuItem >
         ))}
-      </Select>
+          
+        </Select>
+      </FormControl>
+    </Box>
 
-      <Select value={difficulty} 
+      <Box sx={{ minWidth: 120 }}>
+      <FormControl fullWidth>
+        <InputLabel id="difficulty-label">Difficulty</InputLabel>
+        <Select
+          labelId="difficulty-label"
+          id="difficulty-select"
+          value={difficulty}
+          label="Difficulty"
+          onChange={(e) => setDifficulty(e.target.value)}
+        >
+          <MenuItem value = ''>None</MenuItem>
+        {difficulties.map((diff) => (  
+          <MenuItem key={diff} value={diff}>{diff}</MenuItem> 
+        ))}
+          
+        </Select>
+      </FormControl>
+    </Box>
+
+      {/* <Select 
+      value={difficulty} 
       onChange={(e) => setDifficulty(e.target.value)} 
       size="small"
       label='Difficulty'
       >
-        <MenuItem value = ''>None</MenuItem>
-        {difficulties.map((diff) => (  
-          <MenuItem key={diff} value={diff}>{diff}</MenuItem> 
-        ))}
-      </Select>
+        
+      </Select> */}
       </Stack>
      </Box>
-    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(4, 270px)', gap: 2, justifyContent: 'start' }}>
+    <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: 2, justifyContent: 'start' }}>
       {recipes.map((recipe) => (
         <RecipeCard
           key={recipe.id}
