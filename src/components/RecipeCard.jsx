@@ -28,7 +28,7 @@ const RecipeCard = ({id, title, description, imageurl, date, path, onEdit, onDel
     const handleDelete = async () => {
       handleMenuClose()
       try {
-       const result = await axios.delete(`http://localhost:3000/recipes/${id}`,
+       const result = await axios.delete(`${process.env.REACT_API_URL}/recipes/${id}`,
         {
           headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`

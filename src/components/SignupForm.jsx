@@ -14,7 +14,7 @@ const SignupForm = () => {
     setError(null)
     setLoading(true)
     try {
-      const response = await axios.post('http://localhost:3000/signup', {
+      const response = await axios.post('${process.env.REACT_API_URL}/signup', {
         name: name,
         email: email,
         password: password

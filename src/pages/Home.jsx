@@ -14,7 +14,7 @@ const Home = () => {
    // Fetch all unique categories and difficulties once on mount
   const fetchFilters = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/recipes/all-public`,
+      const response = await axios.get(`${process.env.REACT_API_URL}/recipes/all-public`,
         { headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
       }})
@@ -27,7 +27,7 @@ const Home = () => {
 
   const fetchRecipes = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/recipes/all-public?search=${searchTerm}&category=${category}&difficulty=${difficulty}`,
+      const response = await axios.get(`${process.env.REACT_API_URL}/recipes/all-public?search=${searchTerm}&category=${category}&difficulty=${difficulty}`,
         { headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
       }})

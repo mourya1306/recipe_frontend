@@ -35,7 +35,7 @@ export const AppProvider = ({ children }) => {
       }
 
       try {
-        const result = await axios.get('http://localhost:3000/user', {
+        const result = await axios.get(`${process.env.REACT_API_URL}/user`, {
           headers: {
             Authorization: `Bearer ${token}`
           }

@@ -203,7 +203,7 @@ const CreateRecipe = ({isEdit}) => {
 
   const fetchRecipeDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/recipes/${id}`, {
+      const response = await axios.get(`${process.env.REACT_API_URL}/recipes/${id}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -242,7 +242,7 @@ const CreateRecipe = ({isEdit}) => {
 
     console.log('Final payload', payload)
     if (isEdit) {
-        const updateRecipe = await axios.put(`http://localhost:3000/recipes/${id}/update`, payload,
+        const updateRecipe = await axios.put(`${process.env.REACT_API_URL}/recipes/${id}/update`, payload,
         {
             headers: {
                 'Content-Type': 'application/json',
@@ -257,7 +257,7 @@ const CreateRecipe = ({isEdit}) => {
 
     try {
     // TODO: send payload to API
-    const result = await axios.post('http://localhost:3000/recipes/create', payload,
+    const result = await axios.post('${process.env.REACT_API_URL}/recipes/create', payload,
         {
             headers: {
                 'Content-Type': 'application/json',

@@ -91,7 +91,7 @@ const CreateAiRecipe = () => {
         const ingredientsArray = strIngredient.split(',').map(ing => ing.trim()).filter(ing => ing !== '')
         try {
         setIsLoading(true)
-        const result = await axios.post('http://localhost:3000/recipes/ai-create', { ingredients: ingredientsArray, useOnlyThis: checked },
+        const result = await axios.post(`${process.env.REACT_API_URL}/recipes/ai-create`, { ingredients: ingredientsArray, useOnlyThis: checked },
         {headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }})
         setAiRecipes(result.data.recipes)
         setIsLoading(false)
@@ -113,7 +113,7 @@ const handleTabChnage = (event, newValue) => {
 const addToMyrecipe = async () => {
 
     try {
-      await axios.post('http://localhost:3000/recipes/create', {
+      await axios.post(`${process.env.REACT_API_URL}/recipes/create`, {
         ...aiRecipes[activeTab]
       },
     {

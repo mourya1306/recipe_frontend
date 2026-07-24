@@ -14,7 +14,7 @@ const RecipeDetails = () => {
 
     const fetchRecipeDetails = async () => {
         try {
-             const response = await axios.get(`http://localhost:3000/recipes/${id}`,
+             const response = await axios.get(`${process.env.REACT_API_URL}/recipes/${id}`,
                 {headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }})
 
                 setRecipe(response.data.recipe)

@@ -15,7 +15,7 @@ const LoginForm = () => {
 
     const SignInUser = async () => {
         try {
-            const response = await axios.post('http://localhost:3000/login/', {
+            const response = await axios.post(`${process.env.REACT_API_URL}/login/`, {
                 email: email,
                 password: password
             })

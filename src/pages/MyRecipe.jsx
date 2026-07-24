@@ -13,7 +13,7 @@ const MyRecipe = () => {
 
     const fetchMyRecipes = async () => {
         try {
-            const response = await axios.get('http://localhost:3000/recipes/my-recipes',
+            const response = await axios.get(`${process.env.REACT_API_URL}/recipes/my-recipes`,
                 {headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }})    
             setMyRecipes(response.data)
 
@@ -29,7 +29,7 @@ const MyRecipe = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:3000/recipes/${id}`, {
+            await axios.delete(`${process.env.REACT_API_URL}/recipes/${id}`, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
             });
             // remove locally without refetch
