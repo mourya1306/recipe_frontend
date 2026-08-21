@@ -76,9 +76,6 @@ const SignupForm = () => {
                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-
-            <FormControlLabel control={<Checkbox />} label="I want to receive updates via email." />
-
             <Button fullWidth 
             onClick={signUpUser}
             disabled={loading}
