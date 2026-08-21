@@ -1,7 +1,7 @@
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import RecipeCard from '../components/RecipeCard'
 import api from '../config/api'
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material'
+import { Alert, Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material'
 
 const Home = () => {
   const [recipes, setRecipes] = useState([])
@@ -10,25 +10,40 @@ const Home = () => {
   const [difficulties, setDifficulties] = useState([])
   const [category, setCategory] = useState('')
   const [difficulty, setDifficulty] = useState('')
+  const [apiError, setApiError] = useState(false)
+
+  const getRecipeList = (data) => Array.isArray(data) ? data : []
 
    // Fetch all unique categories and difficulties once on mount
   const fetchFilters = async () => {
     try {
       const response = await api.get('/recipes/all-public')
-      setCategories([...new Set(response.data.map(recipe => recipe.category))])
-      setDifficulties([...new Set(response.data.map(recipe => recipe.difficulty))])
+      const recipeList = getRecipeList(response.data)
+      setCategories([...new Set(recipeList.map(recipe => recipe.category).filter(Boolean))])
+      setDifficulties([...new Set(recipeList.map(recipe => recipe.difficulty).filter(Boolean))])
     } catch (error) {
       console.error('Error fetching filters:', error)
+      setCategories([])
+      setDifficulties([])
     }
   }
 
   const fetchRecipes = async () => {
     try {
-      const response = await api.get(`/recipes/all-public?search=${searchTerm}&category=${category}&difficulty=${difficulty}`)
+      const response = await api.get('/recipes/all-public', {
+        params: {
+          search: searchTerm,
+          category,
+          difficulty
+        }
+      })
 
-      setRecipes(response.data)
+      setRecipes(getRecipeList(response.data))
+      setApiError(false)
     } catch (error) {
       console.error('Error fetching recipes:', error)
+      setRecipes([])
+      setApiError(true)
     } 
   }
 
@@ -43,6 +58,11 @@ const Home = () => {
   }, [category, difficulty])
   return (
     <>
+    {apiError && (
+      <Alert severity="warning" sx={{ mb: 2 }}>
+        Recipes are unavailable right now. Please start the backend and try again.
+      </Alert>
+    )}
     <Box sx={{ alignItems: 'center', mb: 2 }}>
       <Stack direction="row" spacing={2}>
       <TextField
