@@ -1,24 +1,30 @@
-import axios from 'axios'
-import React, { createContext, useState, useEffect, use } from 'react'
+import React, { createContext, useState, useEffect } from 'react'
+import api from './api'
 
  export const AppContext = createContext()
 
+const readStoredJson = (key, fallback) => {
+  const saved = localStorage.getItem(key)
+
+  if (!saved) {
+    return fallback
+  }
+
+  try {
+    return JSON.parse(saved)
+  } catch {
+    localStorage.removeItem(key)
+    return fallback
+  }
+}
+
 export const AppProvider = ({ children }) => {
   // Initialize from localStorage, fallback to false
-  const [isAuth, setIsAuth] = useState(() => {
-    const saved = localStorage.getItem('isAuth')
-    return saved ? JSON.parse(saved) : false
-  })
+  const [isAuth, setIsAuth] = useState(() => readStoredJson('isAuth', false))
 
-  const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('user')
-    return saved ? JSON.parse(saved) : {}
-  })
+  const [user, setUser] = useState(() => readStoredJson('user', {}))
 
-  const [themeMode, setThemeMode] = useState(() => {
-    const saved = localStorage.getItem('themeMode')
-    return saved ? JSON.parse(saved) : 'light'
-  })
+  const [themeMode, setThemeMode] = useState(() => readStoredJson('themeMode', 'light'))
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -35,11 +41,7 @@ export const AppProvider = ({ children }) => {
       }
 
       try {
-        const result = await axios.get(`${process.env.REACT_API_URL}/user`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
+        const result = await api.get('/user')
 
         if (result.data) {
           localStorage.setItem('user', JSON.stringify(result.data.user))

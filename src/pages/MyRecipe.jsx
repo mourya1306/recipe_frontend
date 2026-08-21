@@ -1,25 +1,39 @@
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../config/api'
 import RecipeCard from '../components/RecipeCard'
-import { Box, Button, Dialog, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
+import { Alert, Box, Button, Dialog, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 
 const MyRecipe = () => {
 
     const [myRecipes, setMyRecipes] = useState([])
     const [openDialog, setOpenDialog] = useState(false)
+    const [error, setError] = useState(null)
+    const [noRecipes, setNoRecipes] = useState(false)
     const navigate = useNavigate()
 
 
     const fetchMyRecipes = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_API_URL}/recipes/my-recipes`,
-                {headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }})    
-            setMyRecipes(response.data)
+            const response = await api.get('/recipes/my-recipes')
+            const recipes = Array.isArray(response.data) ? response.data : []
+            setMyRecipes(recipes)
+            setNoRecipes(recipes.length === 0)
+            setError(null)
 
         } catch (error) {
             console.error('Error fetching my recipes:', error)
-            navigate('/login')
+            if (error.response?.status === 401) {
+              navigate('/login')
+              return
+            }
+            if (error.response?.status === 404) {
+              setMyRecipes([])
+              setNoRecipes(true)
+              return
+            }
+            setNoRecipes(false)
+            setError('Unable to load your recipes. Please try again.')
         }   
     }
 
@@ -29,9 +43,7 @@ const MyRecipe = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`${process.env.REACT_API_URL}/recipes/${id}`, {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-            });
+            await api.delete(`/recipes/${id}`);
             // remove locally without refetch
             setMyRecipes(prev => prev.filter(recipe => recipe.id !== id));
         } catch (error) {
@@ -52,6 +64,13 @@ const MyRecipe = () => {
         Create New Recipe
       </Button>
     </Box>
+
+    {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+    {noRecipes && !error && (
+      <Alert severity="info" sx={{ mb: 2 }}>
+        Your recipe collection is empty. Start by creating your first recipe!
+      </Alert>
+    )}
 
     <Dialog
       open={openDialog}

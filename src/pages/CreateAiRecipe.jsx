@@ -1,6 +1,6 @@
 import { CheckBox } from '@mui/icons-material'
 import { Alert, Box, Button, Card, CardContent, Checkbox, Stack, Tab, Tabs, TextField, Typography } from '@mui/material'
-import axios from 'axios';
+import api from '../config/api';
 import React, { useState } from 'react'
 
 
@@ -91,8 +91,7 @@ const CreateAiRecipe = () => {
         const ingredientsArray = strIngredient.split(',').map(ing => ing.trim()).filter(ing => ing !== '')
         try {
         setIsLoading(true)
-        const result = await axios.post(`${process.env.REACT_API_URL}/recipes/ai-create`, { ingredients: ingredientsArray, useOnlyThis: checked },
-        {headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }})
+        const result = await api.post('/recipes/ai-create', { ingredients: ingredientsArray, useOnlyThis: checked })
         setAiRecipes(result.data.recipes)
         setIsLoading(false)
         } catch (error) {
@@ -113,14 +112,9 @@ const handleTabChnage = (event, newValue) => {
 const addToMyrecipe = async () => {
 
     try {
-      await axios.post(`${process.env.REACT_API_URL}/recipes/create`, {
+      await api.post('/recipes/create', {
         ...aiRecipes[activeTab]
-      },
-    {
-      headers:{
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }
-    });
+      });
     setRecipeAdded([...recipeAdded, activeTab])
     alert('Recipe added to My Recipes!')
 

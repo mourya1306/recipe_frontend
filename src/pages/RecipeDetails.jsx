@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, Divider, Typography } from '@mui/material'
-import axios from 'axios'
+import api from '../config/api'
 import React, { use, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import moment from 'moment'
@@ -14,8 +14,7 @@ const RecipeDetails = () => {
 
     const fetchRecipeDetails = async () => {
         try {
-             const response = await axios.get(`${process.env.REACT_API_URL}/recipes/${id}`,
-                {headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }})
+                 const response = await api.get(`/recipes/${id}`)
 
                 setRecipe(response.data.recipe)
                 setIngredients(response.data.ingredients)

@@ -3,7 +3,7 @@ import { Box, Card, CardContent, IconButton, Typography, Menu, MenuItem } from '
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import axios from 'axios';
+import api from '../config/api';
 
 const RecipeCard = ({id, title, description, imageurl, date, path, onEdit, onDelete}) => {
 
@@ -28,12 +28,7 @@ const RecipeCard = ({id, title, description, imageurl, date, path, onEdit, onDel
     const handleDelete = async () => {
       handleMenuClose()
       try {
-       const result = await axios.delete(`${process.env.REACT_API_URL}/recipes/${id}`,
-        {
-          headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-                }   
-        })
+      await api.delete(`/recipes/${id}`)
         alert('Recipe deleted successfully!')
         
       } catch (error) {

@@ -1,6 +1,6 @@
 import React, { use, useEffect, useState } from 'react'
 import RecipeCard from '../components/RecipeCard'
-import axios from 'axios'
+import api from '../config/api'
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material'
 
 const Home = () => {
@@ -14,10 +14,7 @@ const Home = () => {
    // Fetch all unique categories and difficulties once on mount
   const fetchFilters = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_API_URL}/recipes/all-public`,
-        { headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }})
+      const response = await api.get('/recipes/all-public')
       setCategories([...new Set(response.data.map(recipe => recipe.category))])
       setDifficulties([...new Set(response.data.map(recipe => recipe.difficulty))])
     } catch (error) {
@@ -27,10 +24,7 @@ const Home = () => {
 
   const fetchRecipes = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_API_URL}/recipes/all-public?search=${searchTerm}&category=${category}&difficulty=${difficulty}`,
-        { headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }})
+      const response = await api.get(`/recipes/all-public?search=${searchTerm}&category=${category}&difficulty=${difficulty}`)
 
       setRecipes(response.data)
     } catch (error) {

@@ -1,33 +1,35 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import api from '../config/api'
 import { Box, Card, CardContent, Stack, TextField, Typography, Checkbox, FormControlLabel, Button, Alert } from '@mui/material'
 
 const SignupForm = () => {
+  const navigate = useNavigate()
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(null)
   const [loading, setLoading] = useState(false)
 
   const signUpUser = async () => {
     setError(null)
+    setSuccess(null)
     setLoading(true)
     try {
-      const response = await axios.post('${process.env.REACT_API_URL}/signup', {
+      const response = await api.post('/signup', {
         name: name,
         email: email,
         password: password
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
-        }
       })
 
       console.log('User signed up successfully:', response)
       setName('')
       setEmail('')
       setPassword('')
+      setSuccess('Signup successful. Redirecting to login...')
+      setTimeout(() => navigate('/login'), 1500)
       
     } catch (err) {
       console.error('Error signing up user:', err)
@@ -49,6 +51,7 @@ const SignupForm = () => {
             <Typography variant="h4" sx={{ fontWeight: 800 }}>Sign up</Typography>
 
             {error && <Alert severity="error">{error}</Alert>}
+            {success && <Alert severity="success">{success}</Alert>}
 
             <div>
               <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>Full name</Typography>

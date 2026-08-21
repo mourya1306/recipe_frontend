@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { Link ,useNavigate} from 'react-router-dom'
-import axios from 'axios'
+import api from '../config/api'
 import { AppContext } from '../config/AppContext'
 import { Box, Card, CardContent, Stack, TextField, Typography, Checkbox, FormControlLabel, Button } from '@mui/material'
 
@@ -15,7 +15,7 @@ const LoginForm = () => {
 
     const SignInUser = async () => {
         try {
-            const response = await axios.post(`${process.env.REACT_API_URL}/login/`, {
+            const response = await api.post('/login/', {
                 email: email,
                 password: password
             })

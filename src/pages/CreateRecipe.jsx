@@ -3,7 +3,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import React, { useState, useRef, use, useEffect } from 'react'
 import { useNavigate ,useParams} from 'react-router-dom';
-import axios from 'axios';
+import api from '../config/api';
 
 const CreateRecipe = ({isEdit}) => {
     const steps = ['Recipe Details', 'Ingredients', 'Cooking Instructions'];
@@ -203,11 +203,7 @@ const CreateRecipe = ({isEdit}) => {
 
   const fetchRecipeDetails = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_API_URL}/recipes/${id}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-      })
+      const response = await api.get(`/recipes/${id}`)
       const recipe = response.data
       setStep1Data(recipe.recipe)
       setIngredients(recipe.ingredients)
@@ -242,13 +238,7 @@ const CreateRecipe = ({isEdit}) => {
 
     console.log('Final payload', payload)
     if (isEdit) {
-        const updateRecipe = await axios.put(`${process.env.REACT_API_URL}/recipes/${id}/update`, payload,
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }        
-        })
+        const updateRecipe = await api.put(`/recipes/${id}/update`, payload)
         console.log('Recipe updated successfully', updateRecipe.data)
         setIsSuccess(true)
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -257,14 +247,7 @@ const CreateRecipe = ({isEdit}) => {
 
     try {
     // TODO: send payload to API
-    const result = await axios.post('${process.env.REACT_API_URL}/recipes/create', payload,
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        }
-    )
+    const result = await api.post('/recipes/create', payload)
     console.log('Recipe created successfully', result.data)
     setIsSuccess(true)
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
